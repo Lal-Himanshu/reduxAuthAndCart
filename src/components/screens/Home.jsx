@@ -1,21 +1,21 @@
-import React, {useContext} from 'react';
-import {Alert, Button, ScrollView, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {Alert, Button, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import Header from './common/Header';
+import Header from '../common/Header';
 import {useNavigation} from '@react-navigation/native';
-import FlatListComp from './FlatListComp';
+import FlatListComp from '../common/FlatListComp';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {globalContext} from '../../App';
+
+import {useDispatch} from 'react-redux';
 const Home = () => {
   const pageName = 'Home';
   const navigation = useNavigation();
-  const {setUser} = useContext(globalContext);
-  const {setCartCount} = useContext(globalContext);
+
+  const dispatch = useDispatch();
   async function removeUser() {
     Alert.alert('User Logged Out');
     await AsyncStorage.removeItem('currUser');
-    setUser(null);
-    setCartCount(0);
+    dispatch({type: 'SET_USER', payload: null});
   }
   return (
     <SafeAreaView>

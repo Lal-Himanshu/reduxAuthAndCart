@@ -1,47 +1,50 @@
-import React, {createContext, useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import SignUp from './src/components/SignUp';
-import Login from './src/components/login';
-import Krenai from './src/components/krenai';
-import Home from './src/components/Home';
+import SignUp from './src/components/screens/SignUp';
+import Login from './src/components/screens/login';
+import Krenai from './src/components/screens/krenai';
+import Home from './src/components/screens/Home';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CartItem from './src/components/screens/cartItem';
+import {useDispatch, useSelector} from 'react-redux';
 const Stack = createNativeStackNavigator();
-export const globalContext = createContext();
 const App = () => {
-  const [user, setUser] = useState();
-  const [storedUser, setStoredUser] = useState(null);
-  const [cartCount, setCartCount] = useState(0);
-  async function getData() {
-    const storedEmail = await AsyncStorage.getItem('currUser');
-    setStoredUser(storedEmail);
-  }
+  const userNow = useSelector(state => state.authReducer);
+  const dispatch = useDispatch();
+  const getUser = async () => {
+    try {
+      const user = await AsyncStorage.getItem('currUser');
+      dispatch({type: 'SET_USER', payload: user});
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    getData();
-  }, [user]);
+    getUser();
+  }, [userNow]);
   return (
-    <globalContext.Provider value={{user, setUser, cartCount, setCartCount}}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          {storedUser ? (
-            <>
-              <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
-            </>
-          ) : (
-            <>
-              <Stack.Screen
-                name="Krenai"
-                component={Krenai}
-                style={{alignItems: 'center'}}
-                options={{headerShown: false}}
-              />
-              <Stack.Screen name="SignUp" component={SignUp} options={{headerShown: false}} />
-              <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
-            </>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </globalContext.Provider>
+    <NavigationContainer>
+      <Stack.Navigator>
+        {userNow ? (
+          <>
+            <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
+            <Stack.Screen name="CartItem" component={CartItem} options={{headerShown: false}} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="Krenai"
+              component={Krenai}
+              style={{alignItems: 'center'}}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen name="SignUp" component={SignUp} options={{headerShown: false}} />
+            <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 export default App;

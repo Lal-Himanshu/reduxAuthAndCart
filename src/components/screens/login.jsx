@@ -1,23 +1,16 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ScrollView, View, Text, Image, Button, StyleSheet, Alert} from 'react-native';
-import Input from './input';
-import ErrorText from './common/errorText';
+import Input from '../common/input';
+import ErrorText from '../common/errorText';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-// import SignUp from './SignUp';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
-// import Home from './Home';
-const Stack = createNativeStackNavigator();
+import {useNavigation} from '@react-navigation/native';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
-import Header from './common/Header';
-import {globalContext} from '../../App';
+import Header from '../common/Header';
+import {useDispatch} from 'react-redux';
 const Login = props => {
   const navigation = useNavigation();
-  // <Stack.Navigator>
-  //   <Stack.Screen name="SignUp" component={SignUp} />
-  //   <Stack.Screen name="Home" component={Home} />
-  // </Stack.Navigator>;
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Email is required'),
     password: Yup.string()
@@ -28,14 +21,13 @@ const Login = props => {
   const emailHandle = text => {
     setEmail(text);
   };
-  const {user, setUser} = useContext(globalContext);
+  const dispatch = useDispatch();
   const handleSubmitMy = async () => {
     const existingUserData = await AsyncStorage.getItem(email);
     if (existingUserData !== null) {
       Alert.alert('Login Successful 🎉🎉');
       await AsyncStorage.setItem('currUser', email);
-      setUser(email);
-      // navigation.navigate('Home');
+      dispatch({type: 'SET_USER', payload: email});
     } else {
       Alert.alert('User not found, Redirecting to Sign-Up Page');
       navigation.push('SignUp');
@@ -53,9 +45,8 @@ const Login = props => {
         <ScrollView>
           <Header navigation={navigation} pageTitle={pageName} />
           <View style={styles.container}>
-            {/* <Text style={styles.txt}>Login</Text> */}
             <View style={styles.img}>
-              <Image style={styles.icon} source={require('../components/user.png')} />
+              <Image style={styles.icon} source={require('../../Images/user.png')} />
             </View>
             <Input
               onChangeText={text => {

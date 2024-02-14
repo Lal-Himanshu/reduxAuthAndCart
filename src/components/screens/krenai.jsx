@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, StyleSheet, Button, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Header from './common/Header';
+import Header from '../common/Header';
 const pageName = 'Krenai';
 const Krenai = props => {
   const navigation = useNavigation();

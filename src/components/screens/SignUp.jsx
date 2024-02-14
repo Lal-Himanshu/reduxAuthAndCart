@@ -11,16 +11,15 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import Input from './input';
+import Input from '../common/input';
 import {launchImageLibrary} from 'react-native-image-picker';
-import UserDetails from './UserDetails';
-import ErrorText from './common/errorText';
+import UserDetails from '../common/UserDetails';
+import ErrorText from '../common/errorText';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
 
-// import Login from './login';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Header from './common/Header';
+import Header from '../common/Header';
 import {useNavigation} from '@react-navigation/native';
 
 const SignUp = props => {
@@ -102,16 +101,10 @@ const SignUp = props => {
   };
   const [isVisible, setIsVisible] = useState(false);
   const handleSubmitMy = submittedData => {
-    // setData(submittedData);
     storeUserData();
     navigation.navigate('Login');
-    // setIsVisible(true);
   };
   const pageName = 'Sign Up';
-  const Stack = createNativeStackNavigator();
-  // <Stack.Navigator>
-  //   <Stack.Screen name="Login" component={Login} />
-  // </Stack.Navigator>;
   const navigation = useNavigation();
   return (
     <Formik
@@ -127,7 +120,7 @@ const SignUp = props => {
             <TouchableOpacity onPress={addImage}>
               <View style={styles.img}>
                 {img === '' ? (
-                  <Image style={styles.icon} source={require('../components/dpChange.png')} />
+                  <Image style={styles.icon} source={require('./../../Images/dpChange.png')} />
                 ) : (
                   <Image
                     style={styles.img}
