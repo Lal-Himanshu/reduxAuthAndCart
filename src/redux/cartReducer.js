@@ -1,17 +1,17 @@
-import {ADD_TO_CART} from './constants';
-import {REMOVE_FROM_CART} from './constants';
-import jsonData from '../data/flatListData';
-import {MAKE_FALSE} from './constants';
-import {MAKE_TRUE} from './constants';
-const initialData = [];
-export const cartReducer = (state = initialData, action) => {
-  //   console.log('cardreducer', action);
-  switch (action.type) {
-    case ADD_TO_CART:
-      return [...state, action.data];
-    case REMOVE_FROM_CART:
-      return state.filter(item => item !== action.data);
-    default:
-      return state;
-  }
-};
+import {createSlice} from '@reduxjs/toolkit';
+const initialState = [];
+export const slice = createSlice({
+  name: 'slice',
+  initialState,
+  reducers: {
+    addToCart: (state, action) => {
+      state.push(action.payload);
+    },
+    removeFromCart: (state, action) => {
+      const idToRemove = action.payload.id;
+      return state.filter(item => item.id !== idToRemove);
+    },
+  },
+});
+export const {addToCart, removeFromCart} = slice.actions;
+export default slice.reducer;

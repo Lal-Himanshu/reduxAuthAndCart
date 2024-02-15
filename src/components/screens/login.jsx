@@ -3,12 +3,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ScrollView, View, Text, Image, Button, StyleSheet, Alert} from 'react-native';
 import Input from '../common/input';
 import ErrorText from '../common/errorText';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
 import Header from '../common/Header';
 import {useDispatch} from 'react-redux';
+import {setUser} from '../../redux/authReducer';
 const Login = props => {
   const navigation = useNavigation();
   const validationSchema = Yup.object().shape({
@@ -27,7 +27,7 @@ const Login = props => {
     if (existingUserData !== null) {
       Alert.alert('Login Successful 🎉🎉');
       await AsyncStorage.setItem('currUser', email);
-      dispatch({type: 'SET_USER', payload: email});
+      dispatch(setUser(email));
     } else {
       Alert.alert('User not found, Redirecting to Sign-Up Page');
       navigation.push('SignUp');

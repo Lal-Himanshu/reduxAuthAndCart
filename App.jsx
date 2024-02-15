@@ -8,14 +8,16 @@ import Home from './src/components/screens/Home';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CartItem from './src/components/screens/cartItem';
 import {useDispatch, useSelector} from 'react-redux';
+import {setUser} from './src/redux/authReducer';
 const Stack = createNativeStackNavigator();
 const App = () => {
-  const userNow = useSelector(state => state.authReducer);
+  const userNow = useSelector(state => state.rootReducer.authReducer);
+  // console.log(userNow);
   const dispatch = useDispatch();
   const getUser = async () => {
     try {
       const user = await AsyncStorage.getItem('currUser');
-      dispatch({type: 'SET_USER', payload: user});
+      dispatch(setUser(user));
     } catch (error) {
       console.log(error);
     }

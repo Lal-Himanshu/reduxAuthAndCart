@@ -3,13 +3,15 @@ import {Button, Image, ScrollView, Text, View} from 'react-native';
 import Header from '../common/Header';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {removeFromCart} from '../../redux/action';
+import {removeFromCart} from '../../redux/cartReducer';
+import {changeBoolState} from '../../redux/buttonReducer';
 const CartItem = () => {
   const navigation = useNavigation();
-  const items = useSelector(state => state.cartReducer);
+  const items = useSelector(state => state.rootReducer.cartReducer);
   const dispatch = useDispatch();
   function handleRemove(item) {
     dispatch(removeFromCart(item));
+    dispatch(changeBoolState(item.id));
   }
   return (
     <View style={{backgroundColor: '#fff'}}>

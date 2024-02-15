@@ -17,8 +17,6 @@ import UserDetails from '../common/UserDetails';
 import ErrorText from '../common/errorText';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
-
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Header from '../common/Header';
 import {useNavigation} from '@react-navigation/native';
 
