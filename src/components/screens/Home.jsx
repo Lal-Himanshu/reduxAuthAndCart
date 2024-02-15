@@ -7,6 +7,7 @@ import FlatListComp from '../common/FlatListComp';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {useDispatch} from 'react-redux';
+import {setUser} from '../../redux/authReducer';
 const Home = () => {
   const pageName = 'Home';
   const navigation = useNavigation();
@@ -15,7 +16,7 @@ const Home = () => {
   async function removeUser() {
     Alert.alert('User Logged Out');
     await AsyncStorage.removeItem('currUser');
-    dispatch({type: 'SET_USER', payload: null});
+    dispatch(setUser(null));
   }
   return (
     <SafeAreaView>

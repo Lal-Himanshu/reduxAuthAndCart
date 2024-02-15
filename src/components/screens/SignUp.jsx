@@ -17,8 +17,6 @@ import UserDetails from '../common/UserDetails';
 import ErrorText from '../common/errorText';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
-
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Header from '../common/Header';
 import {useNavigation} from '@react-navigation/native';
 
@@ -116,7 +114,7 @@ const SignUp = props => {
         <ScrollView>
           <Header navigation={navigation} pageTitle={pageName} />
           <View style={styles.container}>
-            {/* <Text style={styles.txt}>Sign Up</Text> */}
+            <Text style={styles.txt}>Sign Up</Text>
             <TouchableOpacity onPress={addImage}>
               <View style={styles.img}>
                 {img === '' ? (

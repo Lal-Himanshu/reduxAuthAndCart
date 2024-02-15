@@ -1,47 +1,55 @@
-import {useState} from 'react';
-import {FlatList, Text, StyleSheet, Image, View, TouchableOpacity} from 'react-native';
-import jsonData from '../../data/flatListData';
-import {useDispatch} from 'react-redux';
-import {addToCart, removeFromCart} from '../../redux/action';
+import {useEffect} from 'react';
+import {
+  FlatList,
+  Text,
+  StyleSheet,
+  Image,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {addToCart, removeFromCart} from '../../redux/cartReducer';
+import {fetchData, changeBoolState} from '../../redux/buttonReducer';
+import {fetchItemData} from '../../redux/itemsData';
 const FlatListComp = ({orientation}) => {
-  const initialButtonStates = {};
-
-  jsonData.forEach(item => {
-    const temp = Number(item.id);
-    initialButtonStates[temp] = true;
-  });
+  const {data, loading} = useSelector(state => state.rootReducer.itemsData);
   const dispatch = useDispatch();
-  const [cartItems, setCartItems] = useState([]);
-  function handleAddToCart(item) {
-    setCartItems(prevItems => {
-      if (prevItems.includes(item)) {
-        dispatch(removeFromCart(item));
-        return prevItems.filter(itemx => itemx !== item);
-      } else {
-        dispatch(addToCart(item));
-
-        return [...prevItems, item];
-      }
-    });
-  }
+  let items = useSelector(state => state.rootReducer.buttonReducer);
+  const handleChangeBoolState = item => {
+    if (items[item.id] === false) {
+      dispatch(addToCart(item));
+    } else {
+      dispatch(removeFromCart(item));
+    }
+    dispatch(changeBoolState(item.id));
+  };
+  useEffect(() => {
+    dispatch(fetchData());
+    dispatch(fetchItemData());
+  }, [dispatch]);
   const renderItem = ({item}) => (
     <View style={styles.item}>
       <View style={styles.view1}>
         <Image style={styles.image} source={{uri: item.download_url}} resizeMode="cover" />
       </View>
-      <TouchableOpacity style={styles.view2} onPress={() => handleAddToCart(item)}>
-        <Text style={styles.cartIcon}>{cartItems.includes(item) ? '-' : '+'}</Text>
+      <TouchableOpacity style={styles.view2} onPress={() => handleChangeBoolState(item)}>
+        <Text style={styles.cartIcon}>{items[item.id] === false ? '+' : '-'}</Text>
       </TouchableOpacity>
     </View>
   );
   return (
     <View style={styles.vi}>
-      <FlatList
-        data={jsonData}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-        horizontal={orientation}
-      />
+      {loading ? (
+        <ActivityIndicator size={'large'} />
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={item => item.id.toString()}
+          horizontal={orientation}
+        />
+      )}
     </View>
   );
 };
