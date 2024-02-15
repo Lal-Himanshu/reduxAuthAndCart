@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux';
 const Header = props => {
   const navigation = useNavigation();
   const hasBack = navigation.canGoBack();
-  const cartData = useSelector(state => state.cartReducer);
+  const cartData = useSelector(state => state.rootReducer.cartReducer);
   return (
     <View style={styles.header}>
       {hasBack && (
