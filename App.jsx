@@ -12,7 +12,6 @@ import {setUser} from './src/redux/authReducer';
 const Stack = createNativeStackNavigator();
 const App = () => {
   const userNow = useSelector(state => state.rootReducer.authReducer);
-  // console.log(userNow);
   const dispatch = useDispatch();
   const getUser = async () => {
     try {

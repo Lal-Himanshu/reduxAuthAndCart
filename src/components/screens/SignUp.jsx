@@ -114,7 +114,7 @@ const SignUp = props => {
         <ScrollView>
           <Header navigation={navigation} pageTitle={pageName} />
           <View style={styles.container}>
-            {/* <Text style={styles.txt}>Sign Up</Text> */}
+            <Text style={styles.txt}>Sign Up</Text>
             <TouchableOpacity onPress={addImage}>
               <View style={styles.img}>
                 {img === '' ? (

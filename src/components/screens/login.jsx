@@ -45,6 +45,7 @@ const Login = props => {
         <ScrollView>
           <Header navigation={navigation} pageTitle={pageName} />
           <View style={styles.container}>
+            <Text style={styles.txt}> Login</Text>
             <View style={styles.img}>
               <Image style={styles.icon} source={require('../../Images/user.png')} />
             </View>
